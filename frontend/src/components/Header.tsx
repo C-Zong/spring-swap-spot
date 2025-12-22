@@ -15,7 +15,8 @@ export default function Header() {
       }}
       className="row-start-1 flex items-center justify-between w-full
         bg-blue-100 dark:bg-blue-900 px-6 gap-4 relative overflow-hidden
-        transition-colors duration-[var(--theme-transition-duration)] ease-in-out"
+        transition-colors duration-[var(--theme-transition-duration)] ease-in-out
+        sticky top-0 z-50"
     >
       <div
         className="pointer-events-none absolute inset-0"

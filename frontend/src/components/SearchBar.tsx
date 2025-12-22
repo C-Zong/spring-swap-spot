@@ -5,15 +5,15 @@ import { useState } from "react";
 export default function SearchBar() {
   const [query, setQuery] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: handle submit
+    // TODO: handle search logic
   };
 
   return (
     <form
       id="search-products"
-      onSubmit={handleSubmit}
+      onSubmit={handleSearch}
       className="relative flex items-center w-full max-w-sm"
     >
       <Search className="absolute ml-3 h-5 w-5" />

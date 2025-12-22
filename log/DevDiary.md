@@ -1,5 +1,27 @@
 # DevDiary
 
+## Dec 22, 2025
+
+```PowerShell
+npm install axios
+npm audit fix --force
+```
+
+### What I did (12/22)
+
+- Upgraded Next.js to 15.5.9
+- Wrote frontend login and sign up pages
+- Set up the backend
+  - Spring Boot 3.5.9
+  - Java 21.0.8.9
+  - Maven 3.9.11
+
+### Thoughts (12/22)
+
+- It’s very convenient to let AI handle the frontend, since the code it generates is understandable. It’s easier to modify it into a style I prefer than to start from an empty file.
+- Things like configuration (e.g., process.env.NEXT_PUBLIC_API_BASE_URL) may require some learning, but I can always ask AI for step-by-step guidance.
+- The trade-off is that it’s easier for me to forget the code later. For example, I may not be very familiar with code I wrote months earlier.
+
 ## Oct 18, 2025
 
 ### What I did (10/18)
