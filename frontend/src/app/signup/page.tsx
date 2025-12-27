@@ -10,7 +10,18 @@ export default function SignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const rules = [
+  const usernameRules = [
+    {
+      name: "3–20 characters",
+      test: (name: string) => name.length >= 3 && name.length <= 20,
+    },
+    {
+      name: "Only letters, numbers, underscore",
+      test: (name: string) => /^[a-zA-Z0-9_]+$/.test(name),
+    },
+  ];
+
+  const passwordRules = [
     {
       name: "Lowercase letters",
       test: (pwd: string) => /[a-z]/.test(pwd),
@@ -28,16 +39,21 @@ export default function SignUpPage() {
       test: (pwd: string) => /[\W_]/.test(pwd),
     },
     {
-      name: "At least 8 characters",
-      test: (pwd: string) => pwd.length >= 8,
+      name: "8-64 characters",
+      test: (pwd: string) => pwd.length >= 8 && pwd.length <= 64,
     },
   ];
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (username.length < 3 || username.length > 20) {
-      setMessage("Username must be 3–20 characters");
+    if (!usernameRules.every((rule) => rule.test(username))) {
+      setMessage("Username can only contain letters, numbers and underscore (3–20 chars)");
+      return;
+    }
+
+    if (!passwordRules.every((rule) => rule.test(password))) {
+      setMessage("Password does not meet all requirements");
       return;
     }
 
@@ -46,20 +62,20 @@ export default function SignUpPage() {
       return;
     }
 
-    const allPass = rules.every((rule) => rule.test(password));
-    if (!allPass) {
-      setMessage("Password does not meet all requirements");
-      return;
-    }
-
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/signup`,
         { username, password }
       );
-      setMessage(res.data.message || "Signup successful");
+
+      if (res.data.code === 0) {
+        setMessage("Signup successful");
+        // TODO: Redirect to login page after a delay
+      } else {
+        setMessage(res.data.message);
+      }
     } catch (err: any) {
-      setMessage(err.response?.data?.message || "Signup failed");
+      setMessage("Network error, please try again later");
     }
   };
 
@@ -79,7 +95,7 @@ export default function SignUpPage() {
               required
             />
             <p className="text-sm text-gray-500 mt-1">
-              Username must be 3–20 characters
+              Username must be 3–20 characters<br />(letters, numbers and underscore only)
             </p>
           </div>
 
@@ -99,7 +115,7 @@ export default function SignUpPage() {
                 Password must include:
               </p>
               <ul className="space-y-1">
-                {rules.map((rule, idx) => {
+                {passwordRules.map((rule, idx) => {
                   const passed = rule.test(password);
                   return (
                     <li key={idx} className="flex items-center gap-2">

@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: swapspot
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/app_db?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/app_db
+    redis:
+      host: localhost
+      port: 6379
+
+  profiles:
+    active: dev # prod
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.cyanzone.swapspot.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    root: INFO
+    # com.zaxxer.hikari: DEBUG
+    # org.mybatis: DEBUG

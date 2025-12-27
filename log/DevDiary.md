@@ -1,5 +1,40 @@
 # DevDiary
 
+## Dec 26, 2025
+
+### What I did (12/26)
+
+```PowerShell
+# Useful Docker Command
+docker ps
+docker exec -it <container_name> sh # bash
+```
+
+- Configured CORS and Spring Security SecurityFilterChain to permit unauthenticated OPTIONS requests for CORS preflight and public access to /api/signup and /api/login, while securing all other API endpoints.
+- Built signup backend flow: request DTO validation, password hashing, transactional user insert with unique-constraint concurrency safety, unified API responses, and global exception handling.
+
+### Thoughts (12/26)
+
+- I've learned a bit of Spring Boot on my own, so using AI-generated code and finding bugs is not too difficult for me. However, I'm pretty sure I wouldn't be able to write the same code again without AI &#x1F605;
+
+## Dec 23, 2025
+
+### What I did (12/23)
+
+- Set up Docker containers
+- mybatis-plus 3.5.6
+- mybatis 3.0.3
+
+```MySQL
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
 ## Dec 22, 2025
 
 ```PowerShell
