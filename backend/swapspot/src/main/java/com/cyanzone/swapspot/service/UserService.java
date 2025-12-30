@@ -1,5 +1,6 @@
 package com.cyanzone.swapspot.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.dao.DuplicateKeyException;
 import com.cyanzone.swapspot.exception.BusinessException;
 import com.cyanzone.swapspot.mapper.UserMapper;
@@ -31,5 +32,20 @@ public class UserService {
         } catch (DuplicateKeyException e) {
             throw new BusinessException(409, "Username already exists");
         }
+    }
+
+    public User findByUsername(String username) {
+        return userMapper.selectOne(
+                new QueryWrapper<User>().eq("username", username)
+        );
+    }
+
+    public User authenticate(String username, String rawPassword) {
+        User user = findByUsername(username);
+        if (user == null ||
+                !passwordEncoder.matches(rawPassword, user.getPasswordHash())) {
+            throw new BusinessException(401, "Invalid username or password");
+        }
+        return user;
     }
 }

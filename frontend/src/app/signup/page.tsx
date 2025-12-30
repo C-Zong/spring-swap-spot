@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+import axios from "@/lib/axios";
 import Link from "next/link";
 
 export default function SignUpPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [code, setCode] = useState<number | null>(null); 
   const [message, setMessage] = useState("");
 
   const usernameRules = [
@@ -64,11 +65,12 @@ export default function SignUpPage() {
 
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/signup`,
+        "/api/signup",
         { username, password }
       );
 
-      if (res.data.code === 0) {
+      setCode(res.data.code);
+      if (code === 0) {
         setMessage("Signup successful");
         // TODO: Redirect to login page after a delay
       } else {
@@ -149,7 +151,7 @@ export default function SignUpPage() {
           </button>
 
           {message && (
-            <p className={`text-center ${message.includes("Success") ? "text-green-600" : "text-red-500"}`}>
+            <p className={`text-center ${code === 0 ? "text-green-600" : "text-red-500"}`}>
               {message}
             </p>
           )}

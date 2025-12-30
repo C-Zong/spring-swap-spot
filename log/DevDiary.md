@@ -1,5 +1,16 @@
 # DevDiary
 
+## Dec 29, 2025
+
+### What I did (12/29)
+
+- Built the login backend and implemented user authentication using JWT stored in HttpOnly cookies.
+
+### Thoughts (12/29)
+
+- Spring Security feels more related to networking concepts than to typical application logic. Each part is understandable, but if someone asked me “what exactly do you need to set up authentication?”, I don’t think I could list everything clearly yet.
+- I previously used Ruby on Rails with Devise in a course project, which abstracts almost all authentication logic. It made me think about whether Spring Boot has (or should have) something similar. &#x1F914;
+
 ## Dec 26, 2025
 
 ### What I did (12/26)

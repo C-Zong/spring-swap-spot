@@ -1,25 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+import axios from "@/lib/axios";
 import Link from "next/link";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [code, setCode] = useState<number | null>(null);
   const [message, setMessage] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login`,
+        "/api/login",
         { username, password }
       );
-      setMessage(res.data.message);
-      // TODO: Save JWT to cookie
+      
+      setCode(res.data.code);
+      if (code === 0) {
+        setMessage("Login successful");
+        // TODO: Redirect to home page after a delay
+      } else {
+        setMessage(res.data.message);
+      }
     } catch (err: any) {
-      setMessage(err.response?.data?.message || "Failed to login");
+      setMessage("Network error, please try again later");
     }
   };
 
@@ -51,7 +58,7 @@ export default function LoginPage() {
             Login
           </button>
           {message && (
-            <p className={`text-center ${message.includes("Success") ? "text-green-600" : "text-red-500"}`}>
+            <p className={`text-center ${code === 0 ? "text-green-600" : "text-red-500"}`}>
               {message}
             </p>
           )}

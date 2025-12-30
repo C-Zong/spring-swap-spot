@@ -35,3 +35,8 @@ logging:
     root: INFO
     # com.zaxxer.hikari: DEBUG
     # org.mybatis: DEBUG
+
+app:
+  jwt:
+    secret: "CHANGE_ME_TO_A_LONG_RANDOM_SECRET_32+_CHARS"
+    expire-seconds: 86400
