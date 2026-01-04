@@ -22,7 +22,7 @@ public class UserService {
     }
 
     @Transactional
-    public void register(String username, String password) {
+    public User register(String username, String password) {
         User user = new User();
         user.setUsername(username);
         user.setPasswordHash(passwordEncoder.encode(password));
@@ -32,6 +32,7 @@ public class UserService {
         } catch (DuplicateKeyException e) {
             throw new BusinessException(409, "Username already exists");
         }
+        return user;
     }
 
     public User findByUsername(String username) {

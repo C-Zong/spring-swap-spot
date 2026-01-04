@@ -1,5 +1,41 @@
 # DevDiary
 
+## Jan 3, 2026
+
+### What I did (01/03)
+
+```MySQL
+ALTER TABLE users
+ADD COLUMN headline VARCHAR(255) NULL,
+ADD COLUMN bio TEXT NULL,
+ADD COLUMN avatar_key VARCHAR(512) NULL;
+```
+
+```Bash
+# AWS CLI
+aws configure
+aws sts get-caller-identity
+
+# Toast
+npm install react-hot-toast
+```
+
+- Updated the sidebar
+- Implemented logout
+- Built the profile section in the dashboard
+- Set up AWS S3 and started using it to store user avatars
+
+### Pitfalls (01/03)
+
+- I didn’t leave enough comments in my code (need to get better at writing comments &#x1F62E;&#x200D;&#x1F4A8;)
+- Storing the user id in the SecurityContext can reduce extra database queries
+- Old user avatar files need to be cleaned up manually
+
+### Thoughts (01/03)
+
+- I’m worried I might not finish everything before winter break &#x1F62D;
+- I think I’ll prioritize shipping. I want to enjoy my break and keep things simple.
+
 ## Dec 29, 2025
 
 ### What I did (12/29)

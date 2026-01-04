@@ -5,16 +5,18 @@ import { usePathname } from "next/navigation";
 
 interface NavLinkProps {
   href: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   children: React.ReactNode;
 }
 
-export default function NavLink({ href, children }: NavLinkProps) {
+export default function NavLink({ href, onClick, children }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
 
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={`
         rounded p-2 transition
         ${isActive 

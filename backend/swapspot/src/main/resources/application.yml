@@ -3,7 +3,7 @@ spring:
     name: swapspot
 
   datasource:
-    url: jdbc:mysql://localhost:3306/app_db?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/app_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: root
     password: root
 
@@ -40,3 +40,8 @@ app:
   jwt:
     secret: "CHANGE_ME_TO_A_LONG_RANDOM_SECRET_32+_CHARS"
     expire-seconds: 86400
+
+aws:
+  region: us-east-2
+  s3:
+    bucket: swapspot-dev-assets

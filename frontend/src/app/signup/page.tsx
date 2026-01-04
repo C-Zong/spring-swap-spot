@@ -3,6 +3,7 @@
 import { useState } from "react";
 import axios from "@/lib/axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
   const [username, setUsername] = useState("");
@@ -11,6 +12,8 @@ export default function SignUpPage() {
   const [code, setCode] = useState<number | null>(null); 
   const [message, setMessage] = useState("");
 
+  const router = useRouter();
+  
   const usernameRules = [
     {
       name: "3–20 characters",
@@ -70,9 +73,10 @@ export default function SignUpPage() {
       );
 
       setCode(res.data.code);
-      if (code === 0) {
+      if (res.data.code === 0) {
         setMessage("Signup successful");
-        // TODO: Redirect to login page after a delay
+        router.push("/");
+        router.refresh();
       } else {
         setMessage(res.data.message);
       }

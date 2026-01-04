@@ -4,12 +4,10 @@ import com.cyanzone.swapspot.common.ApiResponse;
 import com.cyanzone.swapspot.dto.LoginRequest;
 import com.cyanzone.swapspot.dto.SignupRequest;
 import com.cyanzone.swapspot.entity.User;
-import com.cyanzone.swapspot.service.JwtService;
+import com.cyanzone.swapspot.service.AuthService;
 import com.cyanzone.swapspot.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,22 +15,23 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final UserService userService;
-    private final JwtService jwtService;
+    private final AuthService authService;
 
-    public AuthController(UserService userService,  JwtService jwtService) {
+    public AuthController(UserService userService, AuthService authService) {
         this.userService = userService;
-        this.jwtService = jwtService;
+        this.authService = authService;
     }
 
     @PostMapping("/signup")
     public ApiResponse<Void> signup(
-            @Valid @RequestBody SignupRequest request) {
+            @Valid @RequestBody SignupRequest request,
+            HttpServletResponse response) {
 
-        userService.register(
+        User user = userService.register(
                 request.getUsername(),
                 request.getPassword()
         );
-
+        authService.login(user, response);
         return ApiResponse.success();
     }
 
@@ -42,9 +41,13 @@ public class AuthController {
             HttpServletResponse response) {
 
         User user = userService.authenticate(request.getUsername(), request.getPassword());
-        String token = jwtService.generateToken(user.getId(), user.getUsername());
-        ResponseCookie cookie = jwtService.createAuthCookie(token);
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        authService.login(user, response);
+        return ApiResponse.success();
+    }
+
+    @PostMapping("/logout")
+    public ApiResponse<?> logout(HttpServletResponse response) {
+        authService.logout(response);
         return ApiResponse.success();
     }
 

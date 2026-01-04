@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from 'next-themes'
+import { Toaster } from "react-hot-toast";
 import "@/styles/globals.css";
 import Header from "@/components/Header";
 import SideBar from "@/components/SideBar";
@@ -25,11 +26,12 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
           <main className="row-start-2 flex flex-col sm:flex-row gap-[32px] items-start w-full flex-1 min-h-0">
-            <aside className="flex-shrink-0 sticky top-23 z-40 w-full sm:w-1/4">
+            <aside className="flex-shrink-0 sm:sticky sm:top-23 z-40 w-full sm:w-1/4">
               <SideBar />
             </aside>
             <div className="flex-1 min-h-0 overflow-auto w-full sm:w-3/4">
               {children}
+              <Toaster />
             </div>
           </main>
           <footer className="row-start-3">

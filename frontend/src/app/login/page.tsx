@@ -3,12 +3,15 @@
 import { useState } from "react";
 import axios from "@/lib/axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState<number | null>(null);
   const [message, setMessage] = useState("");
+
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,11 +20,12 @@ export default function LoginPage() {
         "/api/login",
         { username, password }
       );
-      
+
       setCode(res.data.code);
-      if (code === 0) {
+      if (res.data.code === 0) {
         setMessage("Login successful");
-        // TODO: Redirect to home page after a delay
+        router.push("/");
+        router.refresh();
       } else {
         setMessage(res.data.message);
       }
