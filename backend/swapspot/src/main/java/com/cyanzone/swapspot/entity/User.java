@@ -3,7 +3,7 @@ package com.cyanzone.swapspot.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -21,6 +21,6 @@ public class User {
     private String bio;
     private String avatarKey;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

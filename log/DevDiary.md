@@ -1,5 +1,80 @@
 # DevDiary
 
+## Jan 6, 2026
+
+### What I did (01/06)
+
+```MySQL
+CREATE TABLE items (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  seller_id INT NOT NULL,
+
+  title VARCHAR(120) NOT NULL,
+  description TEXT NOT NULL,
+
+  price_cents INT NOT NULL,
+  currency CHAR(3) NOT NULL DEFAULT 'USD',
+
+  category ENUM('Clothing','Electronics','Furniture','Books','Other') NOT NULL DEFAULT 'Other',
+  item_condition ENUM('New','Like New','Good','Fair','For parts') NOT NULL DEFAULT 'Good',
+
+  trade_method ENUM('Pickup','Meetup','Shipping') NOT NULL DEFAULT 'Meetup',
+  location VARCHAR(120) NOT NULL,
+
+  tags_json JSON NULL,
+
+  quantity INT NOT NULL DEFAULT 1,
+  negotiable BOOLEAN NOT NULL DEFAULT TRUE,
+
+  status ENUM('Draft','Active','Sold','Archived') NOT NULL DEFAULT 'Draft',
+
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (id),
+  INDEX idx_items_seller (seller_id),
+  INDEX idx_items_status (status),
+  INDEX idx_items_category (category),
+  INDEX idx_items_updated_at (updated_at),
+
+  CONSTRAINT fk_items_seller
+    FOREIGN KEY (seller_id) REFERENCES users(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE item_images (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  item_id BIGINT UNSIGNED NOT NULL,
+
+  s3_key VARCHAR(255) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_item_images_item_order (item_id, sort_order),
+  INDEX idx_item_images_item (item_id),
+
+  CONSTRAINT fk_item_images_item
+    FOREIGN KEY (item_id) REFERENCES items(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+- Built the item management flow.
+
+### Pitfalls (01/06)
+
+- The folder structure is getting a bit messy. Next time I should probably organize it first instead of jumping straight into coding (but I don’t want to refactor it this time).
+- Some parts of the code are repeated. Same root cause: I should plan/organize earlier.
+
+### Thoughts (01/06)
+
+- AI can generate code that works, but it still takes time to tweak it to match the UI style I want.
+- Re logic: If AI can remember the earlier conversation and the code I’ve already written, I think it can generate code that doesn’t need much debugging.
+- Frontend: Sometimes it adds redundant UX logic. For example, it suggested having both “Save” and “Publish”, but since the form already lets me change the status, “Publish” is unnecessary.
+- If AI ever becomes powerful enough to remember everything and understand what humans truly want… then anyone could build websites without much expertise. So… what’s my job going to be? &#x1F605;
+
 ## Jan 3, 2026
 
 ### What I did (01/03)

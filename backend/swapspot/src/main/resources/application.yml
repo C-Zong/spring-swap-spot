@@ -20,6 +20,9 @@ spring:
       host: localhost
       port: 6379
 
+  jackson:
+    time-zone: UTC
+
   profiles:
     active: dev # prod
 
