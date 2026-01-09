@@ -1,5 +1,16 @@
 # DevDiary
 
+## Jan 9, 2026
+
+### What I did (01/09)
+
+```Bash
+npm i chart.js react-chartjs-2
+```
+
+- Implemented seller and current user profile pages
+- Added search bar logic.
+
 ## Jan 8, 2026
 
 ### What I did (01/08)

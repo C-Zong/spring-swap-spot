@@ -5,7 +5,7 @@ import type { Listing, ListingVM } from "@/hooks/useMyListings";
 import { formatMoney } from "@/lib/money";
 import { getDiscoverRaw } from "@/lib/api/discover";
 
-export function useDiscover(opts?: { limit?: number }) {
+export function useDiscover(opts?: { limit?: number; q?: string }) {
   const [listings, setListings] = useState<ListingVM[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +14,9 @@ export function useDiscover(opts?: { limit?: number }) {
     setLoading(true);
     setError(null);
     try {
-      const rows = await getDiscoverRaw(typeof opts?.limit === "number" ? opts.limit : 36);
+      const limit = opts?.limit ?? 36;
+      const q = (opts?.q ?? "").trim();
+      const rows = await getDiscoverRaw(limit, q);
 
       const limited =
         typeof opts?.limit === "number" ? rows.slice(0, opts.limit) : rows;
@@ -39,7 +41,7 @@ export function useDiscover(opts?: { limit?: number }) {
 
   useEffect(() => {
     load();
-  }, [opts?.limit]);
+  }, [opts?.limit, opts?.q]);
 
   return { listings, loading, error };
 }

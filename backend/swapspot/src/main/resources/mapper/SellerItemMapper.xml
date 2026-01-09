@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyanzone.swapspot.mapper.SellerItemMapper">
+    <select id="listSellerActiveItems" resultType="com.cyanzone.swapspot.dto.SellerItemCardRow">
+        SELECT
+            i.id,
+            i.title,
+            i.price_cents AS priceCents,
+            i.currency,
+            i.location,
+            i.negotiable,
+            i.quantity,
+            (
+                SELECT s3_key
+                FROM item_images img
+                WHERE img.item_id = i.id
+                ORDER BY img.sort_order ASC
+                LIMIT 1
+            ) AS coverKey,
+            i.updated_at AS updatedAt
+        FROM items i
+        WHERE i.seller_id = #{sellerId}
+        AND i.status = #{status}
+        ORDER BY i.updated_at DESC
+        LIMIT #{limit}
+    </select>
+</mapper>

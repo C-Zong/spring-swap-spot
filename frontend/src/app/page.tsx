@@ -3,9 +3,13 @@
 import React from "react";
 import ItemCard from "@/components/discover/ItemCard";
 import { useDiscover } from "@/hooks/useDiscover";
+import { useSearchParams } from "next/navigation";
 
 export default function DiscoverPage() {
-  const { listings, loading, error } = useDiscover({ limit: 36 });
+  const params = useSearchParams();
+  const q = params.get("q") ?? "";
+
+  const { listings, loading, error } = useDiscover({ limit: 36, q });
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6">
@@ -14,7 +18,7 @@ export default function DiscoverPage() {
           Discover
         </div>
         <div className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Hot listings right now
+          {q ? `Results for "${q}"` : "Hot listings right now"}
         </div>
       </div>
 

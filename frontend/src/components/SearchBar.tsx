@@ -1,13 +1,18 @@
 "use client";
 import { Search } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
+  const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: handle search logic
+    const q = query.trim();
+    if (!q) return;
+
+    router.push(`/?q=${encodeURIComponent(q)}`);
   };
 
   return (
@@ -27,6 +32,9 @@ export default function SearchBar() {
           focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50
           dark:focus:ring-white/20 dark:focus:border-white/50"
       />
+      <button type="submit" className="sr-only">
+        Search
+      </button>
     </form>
   );
 }

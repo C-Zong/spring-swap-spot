@@ -7,9 +7,9 @@ export type ApiResponse<T> = {
   data: T;
 };
 
-export async function getDiscoverRaw(limit = 36): Promise<Listing[]> {
+export async function getDiscoverRaw(limit = 36, q?: string): Promise<Listing[]> {
   const res = await api.get<ApiResponse<Listing[]>>("/api/discover", {
-    params: { limit },
+    params: q ? { limit, q } : { limit },
   });
 
   if (res.data.code !== 0) {

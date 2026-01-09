@@ -22,8 +22,12 @@ public class DiscoverController {
 
     @GetMapping
     public ApiResponse<List<ListingDto>> discover(
-            @RequestParam(defaultValue = "36") int limit
+            @RequestParam(defaultValue = "36") int limit,
+            @RequestParam(required = false) String q
     ) {
-        return ApiResponse.success(discoverService.discover(limit));
+        if (q == null || q.isBlank()) {
+            return ApiResponse.success(discoverService.discover(limit));
+        }
+        return ApiResponse.success(discoverService.search(q.trim(), limit));
     }
 }

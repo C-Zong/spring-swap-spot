@@ -5,7 +5,7 @@ export default function Card({
   children,
   action,
 }: {
-  title: string;
+  title: string | React.ReactNode;
   children: React.ReactNode;
   action?: React.ReactNode;
 }) {
