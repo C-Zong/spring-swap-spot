@@ -1,5 +1,71 @@
 # DevDiary
 
+## Jan 8, 2026
+
+### What I did (01/08)
+
+```MySQL
+CREATE TABLE item_favorites (
+  user_id INT NOT NULL,
+  item_id BIGINT UNSIGNED NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (user_id, item_id),
+  INDEX idx_item_fav_item (item_id),
+
+  CONSTRAINT fk_item_fav_item
+    FOREIGN KEY (item_id) REFERENCES items(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE cart_items (
+  user_id INT NOT NULL,
+  item_id BIGINT UNSIGNED NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (user_id, item_id),
+  INDEX idx_cart_item_user (user_id),
+  INDEX idx_cart_item_item (item_id),
+
+  CONSTRAINT fk_cart_item_item
+    FOREIGN KEY (item_id) REFERENCES items(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE purchase_records (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+  buyer_id INT NOT NULL,
+  seller_id INT NOT NULL,
+
+  item_id BIGINT UNSIGNED NOT NULL,
+  quantity INT NOT NULL,
+
+  price_cents INT NOT NULL,
+  currency CHAR(3) NOT NULL,
+
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (id),
+  INDEX idx_purchase_buyer (buyer_id),
+  INDEX idx_purchase_seller (seller_id),
+  INDEX idx_purchase_item (item_id),
+
+  CONSTRAINT fk_purchase_item
+    FOREIGN KEY (item_id) REFERENCES items(id)
+    ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+- Implemented Discover and Cart pages
+
+### Pitfalls (01/08)
+
+- The Discover page doesn’t know whether an item is already in the cart.
+- Checkout won’t create orders for now. It’s not hard to implement, but it takes time and adds a lot of logic. I’m keeping it simple without things like order status updates or seller notifications. This is mainly a full-stack learning project, so I’m not focusing too much on UX or doing repeated work, since the logic would be very similar anyway.
+- I considered using tags to build a recommendation system, but it would slow me down, so I decided to keep things simple for now.
+- I learned a bit about Redux Toolkit but didn’t use it. And the frontend code is messier than before. &#x1F616;
+
 ## Jan 6, 2026
 
 ### What I did (01/06)

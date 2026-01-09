@@ -2,11 +2,14 @@ package com.cyanzone.swapspot.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.cyanzone.swapspot.dto.ItemDetailResponse;
+import com.cyanzone.swapspot.dto.SellerDto;
 import com.cyanzone.swapspot.entity.Item;
 import com.cyanzone.swapspot.entity.ItemImage;
+import com.cyanzone.swapspot.entity.User;
 import com.cyanzone.swapspot.exception.BusinessException;
 import com.cyanzone.swapspot.mapper.ItemImageMapper;
 import com.cyanzone.swapspot.mapper.ItemMapper;
+import com.cyanzone.swapspot.mapper.UserMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -20,13 +23,21 @@ public class ItemQueryService {
     private final ItemMapper itemMapper;
     private final ItemImageMapper itemImageMapper;
     private final CurrentUserService currentUserService;
+    private final UserMapper userMapper;
+    private final S3Service s3Service;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public ItemQueryService(ItemMapper itemMapper, ItemImageMapper itemImageMapper, CurrentUserService currentUserService) {
+    public ItemQueryService(ItemMapper itemMapper
+            , ItemImageMapper itemImageMapper
+            , CurrentUserService currentUserService
+            , UserMapper userMapper
+            , S3Service s3Service) {
         this.itemMapper = itemMapper;
         this.itemImageMapper = itemImageMapper;
         this.currentUserService = currentUserService;
+        this.userMapper = userMapper;
+        this.s3Service = s3Service;
     }
 
     public ItemDetailResponse getById(Long id) {
@@ -35,9 +46,11 @@ public class ItemQueryService {
         Item item = itemMapper.selectById(id);
         if (item == null) throw new BusinessException(404, "Item not found");
 
+        Integer viewerId = currentUserService.getUserIdOrNull();
+        boolean viewerIsSeller =
+                viewerId != null && viewerId.equals(item.getSellerId());
         if ("Draft".equalsIgnoreCase(item.getStatus())) {
-            Integer viewerId = currentUserService.requireUserId();
-            if (viewerId == null || !viewerId.equals(item.getSellerId())) {
+            if (viewerId == null || !viewerIsSeller) {
                 throw new BusinessException(404, "Item not found");
             }
         }
@@ -53,6 +66,13 @@ public class ItemQueryService {
                 .toList();
 
         List<String> tags = parseTags(item.getTagsJson());
+
+        User seller = userMapper.selectById(item.getSellerId());
+        SellerDto sellerDto = new SellerDto(
+                seller.getId(),
+                seller.getUsername(),
+                s3Service.presignGetUrl(seller.getAvatarKey())
+        );
 
         return new ItemDetailResponse(
                 item.getId(),
@@ -75,7 +95,10 @@ public class ItemQueryService {
                 images,
 
                 item.getCreatedAt(),
-                item.getUpdatedAt()
+                item.getUpdatedAt(),
+
+                sellerDto,
+                viewerIsSeller
         );
     }
 

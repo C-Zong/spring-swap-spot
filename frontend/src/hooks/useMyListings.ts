@@ -13,6 +13,8 @@ export type Listing = {
   currency: string;
   status: ListingStatus;
   updatedAt?: string;
+  coverUrl?: string | null;
+  favored?: boolean;
 };
 
 export type ListingVM = {
@@ -21,6 +23,8 @@ export type ListingVM = {
   price: string;
   status: ListingStatus;
   updatedAt?: string;
+  coverUrl?: string | null;
+  favored?: boolean;
 };
 
 export function useMyListings(opts?: { limit?: number }) {
@@ -39,7 +43,7 @@ export function useMyListings(opts?: { limit?: number }) {
 
       setListings(
         limited.map((it:Listing) => ({
-          id: String(it.id),
+          id: it.id,
           title: it.title,
           price: formatMoney(it.priceCents, it.currency || "USD"),
           status: it.status,

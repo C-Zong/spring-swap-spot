@@ -42,4 +42,12 @@ public class CurrentUserService {
         }
         return username;
     }
+
+    public Integer getUserIdOrNull() {
+        try {
+            return requireUserId();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

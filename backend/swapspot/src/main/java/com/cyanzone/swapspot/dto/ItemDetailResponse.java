@@ -24,7 +24,10 @@ public record ItemDetailResponse(
         List<ItemImageDto> images,
 
         Instant createdAt,
-        Instant updatedAt
+        Instant updatedAt,
+
+        SellerDto seller,
+        Boolean viewerIsSeller
 ) {
     public record ItemImageDto(String key, Integer sortOrder) {}
 }

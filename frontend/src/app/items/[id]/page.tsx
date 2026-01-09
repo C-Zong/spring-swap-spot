@@ -29,6 +29,13 @@ type Item = {
   status: ListingStatus;
 
   images: ItemImage[];
+  viewerIsSeller: boolean;
+
+  seller: {
+    id: number;
+    username: string;
+    avatarUrl?: string | null;
+  };
 };
 
 export default function ItemDetailPage() {
@@ -96,7 +103,13 @@ export default function ItemDetailPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <ItemHeaderBar itemId={item.id} status={item.status} />
+      <ItemHeaderBar
+        itemId={item.id}
+        status={item.status}
+        viewerIsSeller={item.viewerIsSeller}
+        seller={item.seller}
+        maxQty={item.quantity}
+      />
 
       <div className="mt-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">

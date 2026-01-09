@@ -38,6 +38,7 @@ public class S3Service {
     }
 
     public String presignGetUrl(String key) {
+        if (key == null || key.isBlank()) return null;
         GetObjectRequest getReq = GetObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
