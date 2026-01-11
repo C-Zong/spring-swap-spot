@@ -32,5 +32,5 @@ jobs:
           context: ./nginx
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner_lowercase }}/swapspot-nginx:latest
-            ghcr.io/${{ github.repository_owner_lowercase }}/swapspot-nginx:${{ github.sha }}
+            ghcr.io/c-zong/swapspot-nginx:latest
+            ghcr.io/c-zong/swapspot-nginx:${{ github.sha }}
