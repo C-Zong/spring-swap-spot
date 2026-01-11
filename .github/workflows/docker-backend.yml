@@ -45,5 +45,5 @@ jobs:
           file: ./backend/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/swapspot-backend:latest
-            ghcr.io/${{ github.repository_owner }}/swapspot-backend:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner_lowercase }}/swapspot-backend:latest
+            ghcr.io/${{ github.repository_owner_lowercase }}/swapspot-backend:${{ github.sha }}
