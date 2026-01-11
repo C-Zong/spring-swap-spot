@@ -27,7 +27,7 @@ jobs:
         working-directory: ./backend/swapspot
         run: |
           mvn -DskipTests package
-          cp target/*.jar app.jar
+          cp target/*.jar ../app.jar
 
       - uses: docker/setup-buildx-action@v3
 
