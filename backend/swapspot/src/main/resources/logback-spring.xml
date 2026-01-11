@@ -50,14 +50,17 @@
         </appender>
 
         <logger name="com.cyanzone.swapspot" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
             <appender-ref ref="APP_FILE"/>
         </logger>
 
         <logger name="com.baomidou.mybatisplus" level="WARN" additivity="false">
+            <appender-ref ref="CONSOLE"/>
             <appender-ref ref="SQL_FILE"/>
         </logger>
 
         <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
             <appender-ref ref="APP_FILE"/>
         </root>
     </springProfile>
