@@ -24,10 +24,8 @@ jobs:
           java-version: "21"
 
       - name: Build JAR
-        working-directory: ./backend
+        working-directory: ./backend/swapspot
         run: |
-          ./mvnw -v || true
-          mvn -v
           mvn -DskipTests package
           cp target/*.jar app.jar
 
