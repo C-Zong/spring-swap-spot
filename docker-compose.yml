@@ -23,6 +23,8 @@ services:
 
   backend:
     image: ghcr.io/c-zong/swapspot-backend:latest
+    env_file:
+      - .env
     container_name: swapspot-backend
     restart: unless-stopped
     depends_on:
