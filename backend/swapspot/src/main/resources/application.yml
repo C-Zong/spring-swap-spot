@@ -2,29 +2,15 @@ spring:
   application:
     name: swapspot
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/app_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    username: root
-    password: root
+  jackson:
+    time-zone: UTC
 
+  datasource:
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
       idle-timeout: 600000
       max-lifetime: 1800000
-
-  data:
-    mongodb:
-      uri: mongodb://root:root@localhost:27017/app_db
-    redis:
-      host: localhost
-      port: 6379
-
-  jackson:
-    time-zone: UTC
-
-  profiles:
-    active: dev # prod
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
@@ -39,12 +25,5 @@ logging:
     # com.zaxxer.hikari: DEBUG
     # org.mybatis: DEBUG
 
-app:
-  jwt:
-    secret: "CHANGE_ME_TO_A_LONG_RANDOM_SECRET_32+_CHARS"
-    expire-seconds: 86400
-
 aws:
   region: us-east-2
-  s3:
-    bucket: swapspot-dev-assets

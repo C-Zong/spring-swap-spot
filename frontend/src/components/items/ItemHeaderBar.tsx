@@ -55,14 +55,14 @@ export default function ItemHeaderBar({
 
   return (
     <div className="flex items-center justify-between gap-3">
-      <a
+      <Link
         href="/"
         onClick={onBack}
         className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white"
       >
         <ArrowLeft className="h-4 w-4" />
         Back
-      </a>
+      </Link>
 
       <div className="flex items-center gap-2">
         <StatusBadge status={status} />

@@ -1,10 +1,27 @@
 # DevDiary
 
+## Jan 11, 2026
+
+### What I did (01/11)
+
+```Bash
+# Ubuntu
+ssh -i ~/.ssh/swapspot-ec2.pem ubuntu@<Public IP>
+sudo apt update && sudo apt upgrade -y
+
+# Docker
+curl -fsSL https://get.docker.com | sudo sh
+sudo usermod -aG docker ubuntu
+exit
+sudo apt install -y docker-compose-plugin
+docker compose version
+```
+
 ## Jan 10, 2026
 
 ### What I did (01/10)
 
-```Bash
+```PowerShell
 npm i @tiptap/react @tiptap/starter-kit @tiptap/html uuid @tiptap/extension-history
 ```
 
@@ -56,7 +73,7 @@ CREATE TABLE dm_thread_user_state (
 
 ### What I did (01/09)
 
-```Bash
+```PowerShell
 npm i chart.js react-chartjs-2
 ```
 
@@ -215,7 +232,7 @@ ADD COLUMN bio TEXT NULL,
 ADD COLUMN avatar_key VARCHAR(512) NULL;
 ```
 
-```Bash
+```PowerShell
 # AWS CLI
 aws configure
 aws sts get-caller-identity

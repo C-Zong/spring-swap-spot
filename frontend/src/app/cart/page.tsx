@@ -6,6 +6,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { formatMoney } from "@/lib/money";
+import axios from "axios";
 
 type CartLineVM = {
   itemId: number;
@@ -43,8 +44,12 @@ export default function CartPage() {
       const res = await api.get<ApiResp<CartSellerVM[]>>("/api/cart");
       if (res.data.code !== 0) throw new Error(res.data.message || "Failed to load cart");
       setGroups(res.data.data);
-    } catch (e: any) {
-      toast.error(e?.message || "Network error");
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        toast.error( e.message);
+      } else {
+        toast.error("Network error");
+      }
       setGroups([]);
     } finally {
       setLoading(false);
@@ -78,7 +83,7 @@ export default function CartPage() {
     });
 
     try {
-      const res = await api.patch<ApiResp<null>>(`/api/cart/${itemId}`, null, {params: { qty }});
+      const res = await api.patch<ApiResp<null>>(`/api/cart/${itemId}`, null, { params: { qty } });
       if (res.data.code !== 0) throw new Error(res.data.message || "Failed to update quantity");
     } catch (e: any) {
       toast.error(e?.message || "Update failed");

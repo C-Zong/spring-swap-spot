@@ -15,11 +15,11 @@ export default function ListingsCard({
   reload: () => Promise<void> | void;
 }) {
 
-  if (loading) return <Card title="My Listings"><div className="text-sm text-gray-500">Loading...</div></Card>;
-
   const onDelete = useDeleteItem(async () => {
     await reload();
   });
+
+  if (loading) return <Card title="My Listings"><div className="text-sm text-gray-500">Loading...</div></Card>;
 
   return (
     <Card
