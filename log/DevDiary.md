@@ -7,6 +7,7 @@
 ```Bash
 # Ubuntu
 ssh -i ~/.ssh/swapspot-ec2.pem ubuntu@<Public IP>
+
 sudo apt update && sudo apt upgrade -y
 
 # Docker
@@ -15,6 +16,14 @@ sudo usermod -aG docker ubuntu
 exit
 sudo apt install -y docker-compose-plugin
 docker compose version
+
+sudo mkdir -p /opt/swapspot
+sudo chown -R ubuntu:ubuntu /opt/swapspot
+
+scp -i ~/.ssh/swapspot-ec2.pem docker-compose.yml .env ubuntu@<Public IP>:/opt/swapspot/
+echo "PASTE_CLASSIC_TOKEN" | docker login ghcr.io -u <User Name> --password-stdin
+docker compose pull
+docker compose up -d
 ```
 
 ## Jan 10, 2026

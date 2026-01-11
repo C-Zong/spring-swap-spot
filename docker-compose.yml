@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
 
   backend:
-    image: ghcr.io/C-Zong/swapspot-backend:latest
+    image: ghcr.io/c-zong/swapspot-backend:latest
     container_name: swapspot-backend
     restart: unless-stopped
     depends_on:
@@ -42,7 +42,7 @@ services:
       - "8080"
 
   frontend:
-    image: ghcr.io/C-Zong/swapspot-frontend:latest
+    image: ghcr.io/c-zong/swapspot-frontend:latest
     container_name: swapspot-frontend
     restart: unless-stopped
     environment:
@@ -51,7 +51,7 @@ services:
       - "3000"
 
   nginx:
-    image: ghcr.io/C-Zong/swapspot-nginx:latest
+    image: ghcr.io/c-zong/swapspot-nginx:latest
     container_name: swapspot-nginx
     restart: unless-stopped
     depends_on:
