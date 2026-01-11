@@ -24,6 +24,8 @@ scp -i ~/.ssh/swapspot-ec2.pem docker-compose.yml .env ubuntu@<Public IP>:/opt/s
 echo "PASTE_CLASSIC_TOKEN" | docker login ghcr.io -u <User Name> --password-stdin
 docker compose pull
 docker compose up -d
+
+docker compose logs --tail=200 nginx
 ```
 
 ## Jan 10, 2026
