@@ -1,5 +1,57 @@
 # DevDiary
 
+## Jan 10, 2026
+
+### What I did (01/10)
+
+```Bash
+npm i @tiptap/react @tiptap/starter-kit @tiptap/html uuid @tiptap/extension-history
+```
+
+```MySQL
+-- a_id < b_id
+CREATE TABLE dm_threads (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  a_id BIGINT UNSIGNED NOT NULL,
+  b_id BIGINT UNSIGNED NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uniq_pair (a_id, b_id),
+  KEY idx_a (a_id),
+  KEY idx_b (b_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE dm_messages (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  thread_id BIGINT UNSIGNED NOT NULL,
+  sender_id BIGINT UNSIGNED NOT NULL,
+  content_json JSON NOT NULL,
+  client_msg_id VARCHAR(36) NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  revoked_at TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (id),
+  KEY idx_thread_id_id (thread_id, id),
+  KEY idx_sender (sender_id),
+  UNIQUE KEY uniq_client_msg (sender_id, client_msg_id),
+  CONSTRAINT fk_dm_messages_thread
+    FOREIGN KEY (thread_id) REFERENCES dm_threads(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE dm_thread_user_state (
+  thread_id BIGINT UNSIGNED NOT NULL,
+  user_id BIGINT UNSIGNED NOT NULL,
+  cleared_before_msg_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  is_hidden TINYINT NOT NULL DEFAULT 0,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (thread_id, user_id),
+  KEY idx_user_hidden (user_id, is_hidden),
+  CONSTRAINT fk_dm_state_thread
+    FOREIGN KEY (thread_id) REFERENCES dm_threads(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+- Implemented messages page
+
 ## Jan 9, 2026
 
 ### What I did (01/09)

@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.0",
+    "@tiptap/extension-history": "^3.15.3",
+    "@tiptap/html": "^3.15.3",
     "@tiptap/pm": "^3.6.1",
-    "@tiptap/react": "^3.6.1",
-    "@tiptap/starter-kit": "^3.6.1",
+    "@tiptap/react": "^3.15.3",
+    "@tiptap/starter-kit": "^3.15.3",
     "axios": "^1.13.2",
     "chart.js": "^4.5.1",
     "lucide-react": "^0.544.0",
@@ -23,7 +25,8 @@
     "react-chartjs-2": "^5.3.1",
     "react-dom": "19.1.0",
     "react-hot-toast": "^2.6.0",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

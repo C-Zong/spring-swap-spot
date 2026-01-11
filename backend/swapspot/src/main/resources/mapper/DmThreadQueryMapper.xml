@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cyanzone.swapspot.mapper.DmThreadQueryMapper">
+
+    <select id="listThreads" resultType="com.cyanzone.swapspot.dto.DmThreadRow">
+        SELECT
+            t.id AS threadId,
+            CASE WHEN t.a_id = #{uid} THEN t.b_id ELSE t.a_id END AS otherUserId,
+            u.username AS otherUsername,
+            u.avatar_key AS otherAvatarUrl,
+            s.cleared_before_msg_id AS clearedBeforeMsgId,
+            lm.id AS latestMsgId,
+            lm.content_json AS latestContentJson,
+            lm.created_at AS latestAt
+        FROM dm_threads t
+                 JOIN dm_thread_user_state s
+                      ON s.thread_id = t.id AND s.user_id = #{uid} AND s.is_hidden = 0
+                 JOIN users u
+                      ON u.id = CASE WHEN t.a_id = #{uid} THEN t.b_id ELSE t.a_id END
+                 LEFT JOIN dm_messages lm
+                           ON lm.id = (
+                               SELECT MAX(m.id)
+                               FROM dm_messages m
+                               WHERE m.thread_id = t.id
+                                 AND m.id > s.cleared_before_msg_id
+                           )
+        WHERE (t.a_id = #{uid} OR t.b_id = #{uid})
+        ORDER BY COALESCE(lm.id, 0) DESC, t.id DESC
+    </select>
+
+    <select id="listMessages" resultType="com.cyanzone.swapspot.dto.DmMessageRow">
+        SELECT id, sender_id AS senderId, content_json AS contentJson, created_at AS createdAt, revoked_at AS revokedAt
+        FROM dm_messages
+        WHERE thread_id = #{threadId}
+        AND id > #{clearedBefore}
+        <if test="beforeId != null">
+            AND id &lt; #{beforeId}
+        </if>
+        ORDER BY id DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="getLatestMsgId" resultType="java.lang.Long">
+        SELECT MAX(id)
+        FROM dm_messages
+        WHERE thread_id = #{threadId}
+          AND id > #{clearedBefore}
+    </select>
+
+</mapper>
